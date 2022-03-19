@@ -21,6 +21,7 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ALERT": () => (/* binding */ ALERT),
 /* harmony export */   "API": () => (/* binding */ API),
 /* harmony export */   "ERROR": () => (/* binding */ ERROR),
 /* harmony export */   "LIMIT_VIDEO_COUNTS": () => (/* binding */ LIMIT_VIDEO_COUNTS),
@@ -29,6 +30,11 @@ __webpack_require__.r(__webpack_exports__);
 var ERROR = {
   MESSAGE: {
     EMPTY_INPUT: '빈값을 입력할 수 없습니다. 다시 입력해 주세요.'
+  }
+};
+var ALERT = {
+  MESSAGE: {
+    DELETE_CONFRIM: '정말로 삭제하시겠습니까?'
   }
 };
 var API = {
@@ -114,13 +120,6 @@ var YoutubeMachine = /*#__PURE__*/function () {
       (0,_util_general_js__WEBPACK_IMPORTED_MODULE_7__.validateInput)(searchInput);
 
       (0,_babel_runtime_helpers_classPrivateFieldSet__WEBPACK_IMPORTED_MODULE_4__["default"])(this, _searchTarget, searchInput);
-
-      this.updateSearchResult(this.callSearchAPI());
-    }
-  }, {
-    key: "searchScrollingResult",
-    value: function searchScrollingResult() {
-      this.updateSearchResult(this.callSearchAPI());
     }
   }, {
     key: "getURL",
@@ -151,14 +150,23 @@ var YoutubeMachine = /*#__PURE__*/function () {
 
               case 3:
                 response = _context.sent;
-                _context.next = 6;
+
+                if (!response.ok) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _context.next = 7;
                 return response.json();
 
-              case 6:
+              case 7:
                 searchResult = _context.sent;
                 return _context.abrupt("return", searchResult);
 
-              case 8:
+              case 9:
+                throw new Error('search error');
+
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -190,6 +198,283 @@ var YoutubeMachine = /*#__PURE__*/function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/js/modules/handleSearchEvent.js":
+/*!*********************************************!*\
+  !*** ./src/js/modules/handleSearchEvent.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SearchEventHandler": () => (/* binding */ SearchEventHandler)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
+/* harmony import */ var _domain_YoutubeMachine_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../domain/YoutubeMachine.js */ "./src/js/domain/YoutubeMachine.js");
+/* harmony import */ var _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../ui/serachModalInterface.js */ "./src/js/ui/serachModalInterface.js");
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/general.js */ "./src/js/util/general.js");
+
+
+
+
+
+
+
+
+
+var SearchEventHandler = /*#__PURE__*/(0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(function SearchEventHandler() {
+  var _this = this;
+
+  (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__["default"])(this, SearchEventHandler);
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__["default"])(this, "youtubeMachine", new _domain_YoutubeMachine_js__WEBPACK_IMPORTED_MODULE_6__["default"]());
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__["default"])(this, "handleSearch", /*#__PURE__*/(0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee() {
+    var searchInput, response;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+
+            _this.youtubeMachine.resetSearchResult();
+
+            _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__["default"].resetVideoList();
+            searchInput = (0,_util_general_js__WEBPACK_IMPORTED_MODULE_8__.$)('#search-input-keyword').value.trim();
+
+            _this.youtubeMachine.search(searchInput);
+
+            _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__["default"].renderSkeletonUI();
+            _context.next = 8;
+            return _this.youtubeMachine.callSearchAPI();
+
+          case 8:
+            response = _context.sent;
+
+            _this.youtubeMachine.updateSearchResult(response);
+
+            _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__["default"].renderSearchResult(_this.youtubeMachine.searchResult);
+            _context.next = 16;
+            break;
+
+          case 13:
+            _context.prev = 13;
+            _context.t0 = _context["catch"](0);
+            alert(_context.t0.message);
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 13]]);
+  })));
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__["default"])(this, "handleScroll", /*#__PURE__*/function () {
+    var _ref2 = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().mark(function _callee2(e) {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!(e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight)) {
+                _context2.next = 7;
+                break;
+              }
+
+              _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__["default"].renderSkeletonUI();
+              _context2.next = 4;
+              return _this.youtubeMachine.callSearchAPI();
+
+            case 4:
+              response = _context2.sent;
+
+              _this.youtubeMachine.updateSearchResult(response);
+
+              _ui_serachModalInterface_js__WEBPACK_IMPORTED_MODULE_7__["default"].renderNextSearchResult(_this.youtubeMachine.searchResult);
+
+            case 7:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function (_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }());
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_3__["default"])(this, "handleSaveButtonClick", function (e) {
+    if (!e.target.classList.contains('video-item__save-button')) {
+      return;
+    }
+
+    e.target.closest('button').hidden = true;
+
+    _this.youtubeMachine.searchResult.items.forEach(function (item) {
+      if (item.id.videoId === e.target.parentElement.dataset.videoId) {
+        _storage_storage_js__WEBPACK_IMPORTED_MODULE_5__["default"].saveVideo(item);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./src/js/modules/handleWatchLaterVideoEvent.js":
+/*!******************************************************!*\
+  !*** ./src/js/modules/handleWatchLaterVideoEvent.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WatchLaterVideoEventHandler": () => (/* binding */ WatchLaterVideoEventHandler)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
+/* harmony import */ var _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ui/watchLaterInterface.js */ "./src/js/ui/watchLaterInterface.js");
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/general.js */ "./src/js/util/general.js");
+/* harmony import */ var _util_render_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../util/render.js */ "./src/js/util/render.js");
+
+
+
+
+
+
+
+var WatchLaterVideoEventHandler = /*#__PURE__*/(0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_0__["default"])(function WatchLaterVideoEventHandler() {
+  var _this = this;
+
+  (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, WatchLaterVideoEventHandler);
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handleWatchLater", function () {
+    _this.toggleWatchLaterContent();
+
+    _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderWatchLaterVideos();
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "toggleWatchLaterContent", function () {
+    if ((0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-videos').classList.contains('hidden')) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-videos').classList.toggle('hidden');
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-nav-button').classList.toggle('is-active');
+    }
+
+    if (!(0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-videos').classList.contains('hidden')) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-videos').classList.toggle('hidden');
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-nav-button').classList.toggle('is-active');
+    }
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handleWatchedButtonClick", function (e) {
+    if (!e.target.classList.contains('video-item__watched-button')) {
+      return;
+    }
+
+    _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__["default"].toggleWatchedVideo(e.target.parentElement.parentElement.dataset.videoId);
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_6__.removeCheckedVideoItem)('.watch-later-video-item', e.target.parentElement.parentElement.dataset.videoId);
+    _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderEmptyImg();
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handleDeleteButtonClick", function (e) {
+    if (!e.target.classList.contains('video-item__delete-button')) {
+      return;
+    }
+
+    if ((0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.confrimVideoDelete)()) {
+      _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__["default"].deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_6__.removeDeleteVideoItem)('.watch-later-video-item', e.target.parentElement.parentElement.dataset.videoId);
+      _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderEmptyImg();
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./src/js/modules/handleWatchedVideoEvent.js":
+/*!***************************************************!*\
+  !*** ./src/js/modules/handleWatchedVideoEvent.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WatchedVideoEventHandler": () => (/* binding */ WatchedVideoEventHandler)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
+/* harmony import */ var _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ui/watchedVideoInterface.js */ "./src/js/ui/watchedVideoInterface.js");
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/general.js */ "./src/js/util/general.js");
+/* harmony import */ var _util_render_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../util/render.js */ "./src/js/util/render.js");
+
+
+
+
+
+
+
+var WatchedVideoEventHandler = /*#__PURE__*/(0,_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_0__["default"])(function WatchedVideoEventHandler() {
+  var _this = this;
+
+  (0,_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, WatchedVideoEventHandler);
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handleWatchedVideo", function () {
+    _this.toggleWatchedVideoContent();
+
+    _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderWatchedVideos();
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "toggleWatchedVideoContent", function () {
+    if (!(0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-videos').classList.contains('hidden')) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-videos').classList.toggle('hidden');
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watch-later-nav-button').classList.toggle('is-active');
+    }
+
+    if ((0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-videos').classList.contains('hidden')) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-videos').classList.toggle('hidden');
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.$)('.watched-nav-button').classList.toggle('is-active');
+    }
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handledWatchedButtonClick", function (e) {
+    if (!e.target.classList.contains('video-item__watched-button')) {
+      return;
+    }
+
+    _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__["default"].toggleWatchedVideo(e.target.parentElement.parentElement.dataset.videoId);
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_6__.removeCheckedVideoItem)('.watched-video-item', e.target.parentElement.parentElement.dataset.videoId);
+    _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderEmptyImg();
+  });
+
+  (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__["default"])(this, "handleDeleteButtonClick", function (e) {
+    if (!e.target.classList.contains('video-item__delete-button')) {
+      return;
+    }
+
+    if ((0,_util_general_js__WEBPACK_IMPORTED_MODULE_5__.confrimVideoDelete)()) {
+      _storage_storage_js__WEBPACK_IMPORTED_MODULE_3__["default"].deleteSavedVideo(e.target.parentElement.parentElement.dataset.videoId);
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_6__.removeDeleteVideoItem)('.watched-video-item', e.target.parentElement.parentElement.dataset.videoId);
+      _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_4__["default"].renderEmptyImg();
+    }
+  });
+});
 
 /***/ }),
 
@@ -230,9 +515,11 @@ var storage = {
 
     this.setLocalStorage([].concat((0,_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0__["default"])(savedStorage), [data]));
   },
-  saveVideo: function saveVideo(videoId) {
+  saveVideo: function saveVideo(item) {
     var video = {
-      id: videoId
+      id: item.id.videoId,
+      snippet: item.snippet,
+      watched: false
     };
     var savedStorage = this.getLocalStorage();
 
@@ -242,16 +529,47 @@ var storage = {
     }
 
     this.setLocalStorage([video]);
+  },
+  toggleWatchedVideo: function toggleWatchedVideo(videoId) {
+    var savedVideoStorage = this.getLocalStorage();
+    var updatedVideoStorage = savedVideoStorage.map(function (item) {
+      var video = {
+        id: item.id,
+        snippet: item.snippet,
+        watched: item.watched
+      };
+
+      if (item.id === videoId) {
+        video.watched = !item.watched;
+      }
+
+      return video;
+    });
+    this.setLocalStorage(updatedVideoStorage);
+  },
+  deleteSavedVideo: function deleteSavedVideo(videoId) {
+    var savedVideoStorage = this.getLocalStorage();
+    var updatedVideoStorage = savedVideoStorage.filter(function (item) {
+      if (videoId !== item.id) {
+        var video = {
+          id: item.id,
+          snippet: item.snippet,
+          watched: item.watched
+        };
+        return video;
+      }
+    });
+    this.setLocalStorage(updatedVideoStorage);
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (storage);
 
 /***/ }),
 
-/***/ "./src/js/ui/userInterface.js":
-/*!************************************!*\
-  !*** ./src/js/ui/userInterface.js ***!
-  \************************************/
+/***/ "./src/js/ui/serachModalInterface.js":
+/*!*******************************************!*\
+  !*** ./src/js/ui/serachModalInterface.js ***!
+  \*******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -263,13 +581,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
 
 
-var template = {
+var searchVideoTemplate = {
   skeletonUI: "<li class=\"skeleton\">\n  <div class=\"image\"></div>\n  <p class=\"line\"></p>\n  <p class=\"line\"></p>\n</li>",
   videoItem: function videoItem(item) {
     return "\n      <li class=\"video-item\" data-video-id='".concat(item.id.videoId, "'>\n        <img\n          src='").concat(item.snippet.thumbnails.high.url, "'\n          alt=\"video-item-thumbnail\"\n          class=\"video-item__thumbnail\"\n        />\n        <h4 class=\"video-item__title\">").concat(item.snippet.title, "</h4>\n        <p class=\"video-item__channel-name\">").concat(item.snippet.channelTitle, "</p>\n        <p class=\"video-item__published-date\">").concat(item.snippet.publishTime, "</p>\n        <button class=\"video-item__save-button button\">\u2B07 \uC800\uC7A5</button>\n      </li>\n  ");
   }
 };
-var userInterface = {
+var searchModalInterface = {
   resetSearchInput: function resetSearchInput() {
     (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('#search-input-keyword').value = '';
   },
@@ -280,7 +598,7 @@ var userInterface = {
     (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.search-result').classList.remove('search-result--no-result');
     (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.no-result').hidden = true;
     (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').classList.remove('hide');
-    (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').insertAdjacentHTML('beforeEnd', template.skeletonUI.repeat(10));
+    (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.skeletonUI.repeat(10));
     this.resetSearchInput();
   },
   removeSkeletonUI: function removeSkeletonUI() {
@@ -305,7 +623,7 @@ var userInterface = {
     var items = _ref.items;
     this.removeSkeletonUI();
     items.forEach(function (item) {
-      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').insertAdjacentHTML('beforeEnd', template.videoItem(item));
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').insertAdjacentHTML('beforeEnd', searchVideoTemplate.videoItem(item));
 
       _this.removeSavedVideoButton();
     });
@@ -317,27 +635,140 @@ var userInterface = {
     (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').classList.add('hide');
   },
   renderSearchResult: function renderSearchResult(response) {
-    var _this2 = this;
+    if (response.length === 0) {
+      this.renderNoResult();
+      return;
+    }
 
-    response.then(function (data) {
-      if (data.items.length === 0) {
-        _this2.renderNoResult();
-
-        return;
-      }
-
-      _this2.renderVideoItems(data);
-    });
+    this.renderVideoItems(response);
   },
   renderNextSearchResult: function renderNextSearchResult(response) {
-    var _this3 = this;
+    this.renderVideoItems(response);
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchModalInterface);
 
-    response.then(function (data) {
-      _this3.renderVideoItems(data);
+/***/ }),
+
+/***/ "./src/js/ui/watchLaterInterface.js":
+/*!******************************************!*\
+  !*** ./src/js/ui/watchLaterInterface.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/general.js */ "./src/js/util/general.js");
+/* harmony import */ var _util_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/render.js */ "./src/js/util/render.js");
+
+
+
+var watchLaterInterface = {
+  renderEmptyImg: function renderEmptyImg() {
+    var savedVideoData = _storage_storage_js__WEBPACK_IMPORTED_MODULE_0__["default"].getLocalStorage();
+
+    if (!savedVideoData) {
+      console.log(!savedVideoData);
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.showEmptyImg)('.watch-later-empty-img-container');
+      return;
+    }
+
+    var watchLaterVideos = savedVideoData.filter(function (item) {
+      if (item.watched === false) {
+        return item;
+      }
+    });
+
+    if (watchLaterVideos.length === 0) {
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.showEmptyImg)('.watch-later-empty-img-container');
+      return;
+    }
+  },
+  renderWatchLaterVideos: function renderWatchLaterVideos() {
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.removeEmptyImg)('.watch-later-empty-img-container');
+    this.renderEmptyImg();
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.clearVideoItems)('.watch-later-video-item');
+    var savedVideoData = _storage_storage_js__WEBPACK_IMPORTED_MODULE_0__["default"].getLocalStorage();
+
+    if (!savedVideoData) {
+      return;
+    }
+
+    var watchLaterVideos = savedVideoData.filter(function (item) {
+      if (item.watched === false) {
+        return item;
+      }
+    });
+    watchLaterVideos.forEach(function (item) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_1__.$)('.watch-later-videos-container ul').insertAdjacentHTML('beforeEnd', _util_render_js__WEBPACK_IMPORTED_MODULE_2__.videoItemTemplate.videoItem('watch-later-video-item', item));
     });
   }
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (userInterface);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchLaterInterface);
+
+/***/ }),
+
+/***/ "./src/js/ui/watchedVideoInterface.js":
+/*!********************************************!*\
+  !*** ./src/js/ui/watchedVideoInterface.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/general.js */ "./src/js/util/general.js");
+/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../storage/storage.js */ "./src/js/storage/storage.js");
+/* harmony import */ var _util_render_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/render.js */ "./src/js/util/render.js");
+
+
+
+var watchedVideoInterface = {
+  renderEmptyImg: function renderEmptyImg() {
+    var savedVideoData = _storage_storage_js__WEBPACK_IMPORTED_MODULE_1__["default"].getLocalStorage();
+
+    if (!savedVideoData) {
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.showEmptyImg)('.watched-empty-img-container');
+      return;
+    }
+
+    var watchedVideos = savedVideoData.filter(function (item) {
+      if (item.watched) {
+        return item;
+      }
+    });
+
+    if (watchedVideos.length === 0) {
+      (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.showEmptyImg)('.watched-empty-img-container');
+    }
+  },
+  renderWatchedVideos: function renderWatchedVideos() {
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.removeEmptyImg)('.watched-empty-img-container');
+    this.renderEmptyImg();
+    (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.clearVideoItems)('.watched-video-item');
+    var savedVideoData = _storage_storage_js__WEBPACK_IMPORTED_MODULE_1__["default"].getLocalStorage();
+
+    if (!savedVideoData) {
+      return;
+    }
+
+    var watchedVideos = savedVideoData.filter(function (item) {
+      if (item.watched) {
+        return item;
+      }
+    });
+    watchedVideos.forEach(function (item) {
+      (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.watched-videos-container ul').insertAdjacentHTML('beforeEnd', _util_render_js__WEBPACK_IMPORTED_MODULE_2__.videoItemTemplate.videoItem('watched-video-item', item));
+    });
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (watchedVideoInterface);
 
 /***/ }),
 
@@ -352,10 +783,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "$": () => (/* binding */ $),
 /* harmony export */   "$$": () => (/* binding */ $$),
+/* harmony export */   "confrimVideoDelete": () => (/* binding */ confrimVideoDelete),
 /* harmony export */   "quickModalElement": () => (/* binding */ quickModalElement),
 /* harmony export */   "validateInput": () => (/* binding */ validateInput)
 /* harmony export */ });
 /* harmony import */ var _constants_constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/constants.js */ "./src/js/constants/constants.js");
+/* harmony import */ var _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ui/watchedVideoInterface.js */ "./src/js/ui/watchedVideoInterface.js");
+/* harmony import */ var _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ui/watchLaterInterface.js */ "./src/js/ui/watchLaterInterface.js");
+
+
 
 var $ = function $(selector) {
   return document.querySelector(selector);
@@ -373,6 +809,71 @@ var quickModalElement = function quickModalElement(e) {
 
   if (!$('.modal-container').classList.contains('hide')) {
     $('.modal-container').classList.toggle('hide');
+
+    if ($('.watch-later-videos').classList.contains('hidden')) {
+      _ui_watchedVideoInterface_js__WEBPACK_IMPORTED_MODULE_1__["default"].renderWatchedVideos();
+    }
+
+    if ($('.watched-videos').classList.contains('hidden')) {
+      _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderWatchLaterVideos();
+    }
+  }
+};
+var confrimVideoDelete = function confrimVideoDelete() {
+  return window.confirm(_constants_constants_js__WEBPACK_IMPORTED_MODULE_0__.ALERT.MESSAGE.DELETE_CONFRIM);
+};
+
+/***/ }),
+
+/***/ "./src/js/util/render.js":
+/*!*******************************!*\
+  !*** ./src/js/util/render.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clearVideoItems": () => (/* binding */ clearVideoItems),
+/* harmony export */   "removeCheckedVideoItem": () => (/* binding */ removeCheckedVideoItem),
+/* harmony export */   "removeDeleteVideoItem": () => (/* binding */ removeDeleteVideoItem),
+/* harmony export */   "removeEmptyImg": () => (/* binding */ removeEmptyImg),
+/* harmony export */   "showEmptyImg": () => (/* binding */ showEmptyImg),
+/* harmony export */   "videoItemTemplate": () => (/* binding */ videoItemTemplate)
+/* harmony export */ });
+/* harmony import */ var _general_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./general.js */ "./src/js/util/general.js");
+
+var videoItemTemplate = {
+  videoItem: function videoItem(className, item) {
+    return "\n      <li class=\"".concat(className, " video-item\" data-video-id='").concat(item.id, "'>\n      <img\n        src='").concat(item.snippet.thumbnails.high.url, "'\n        alt=\"video-item-thumbnail\"\n        class=\"video-item__thumbnail\"\n      />\n      <h4 class=\"video-item__title\">").concat(item.snippet.title, "</h4>\n      <p class=\"video-item__channel-name\">").concat(item.snippet.channelTitle, "</p>\n      <p class=\"video-item__published-date\">").concat(item.snippet.publishTime, "</p>\n      <div class=\"button-container ").concat(className, "-button-group\">\n          <button type=\"button\" class=\"video-item__watched-button button\">\u2705</button>\n          <button type=\"button\" class=\"video-item__delete-button button\">\uD83D\uDDD1\uFE0F</button>\n      </div>\n    </li>\n      ");
+  },
+  emptyImageItem: '<div class="empty-img-container"><label for="empty-img" hidden>저장된 비디오가 없습니다! 비디오를 저장해주세요</label><img id="empty-img" name="empty-img" src="./assets/empty_img.png"/></div>'
+};
+var removeDeleteVideoItem = function removeDeleteVideoItem(selector, videoId) {
+  (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$$)(selector).forEach(function (element) {
+    if (element.dataset.videoId === videoId) {
+      element.remove();
+    }
+  });
+};
+var clearVideoItems = function clearVideoItems(selector) {
+  (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$$)(selector).forEach(function (element) {
+    return element.remove();
+  });
+};
+var removeCheckedVideoItem = function removeCheckedVideoItem(selector, videoId) {
+  (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$$)(selector).forEach(function (element) {
+    if (element.dataset.videoId === videoId) {
+      element.remove();
+    }
+  });
+};
+var showEmptyImg = function showEmptyImg(selector) {
+  (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).insertAdjacentHTML('beforeEnd', videoItemTemplate.emptyImageItem);
+};
+var removeEmptyImg = function removeEmptyImg(selector) {
+  if ((0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).hasChildNodes()) {
+    (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).removeChild((0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.empty-img-container'));
   }
 };
 
@@ -427,7 +928,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_color_css__WEBPACK_IMPORTED_MODULE_2__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  padding: 64px 0;\n  font-size: 16px;\n}\n\n#app {\n  max-width: 1020px;\n  margin: 0 auto;\n}\n\n.classroom-container__title {\n  text-align: center;\n  font-weight: bold;\n  font-size: 34px;\n  line-height: 36px;\n  margin-bottom: 64px;\n}\n\n.nav {\n  display: flex;\n  justify-content: center;\n}\n\n.button {\n  cursor: pointer;\n  border-radius: 4px;\n  border: none;\n  font-style: normal;\n  font-weight: bold;\n  font-size: 14px;\n  letter-spacing: 1.25px;\n}\n\n.nav__button {\n  width: 80px;\n  height: 36px;\n  background: var(--nav-button-background-color);\n}\n\n.nav__button:hover {\n  background: var(--nav-button-hover-color);\n}\n", "",{"version":3,"sources":["webpack://./src/css/app.css"],"names":[],"mappings":"AACA;EACE,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,iBAAiB;EACjB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,iBAAiB;EACjB,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,uBAAuB;AACzB;;AAEA;EACE,eAAe;EACf,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,sBAAsB;AACxB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,8CAA8C;AAChD;;AAEA;EACE,yCAAyC;AAC3C","sourcesContent":["@import url('./color.css');\nbody {\n  padding: 64px 0;\n  font-size: 16px;\n}\n\n#app {\n  max-width: 1020px;\n  margin: 0 auto;\n}\n\n.classroom-container__title {\n  text-align: center;\n  font-weight: bold;\n  font-size: 34px;\n  line-height: 36px;\n  margin-bottom: 64px;\n}\n\n.nav {\n  display: flex;\n  justify-content: center;\n}\n\n.button {\n  cursor: pointer;\n  border-radius: 4px;\n  border: none;\n  font-style: normal;\n  font-weight: bold;\n  font-size: 14px;\n  letter-spacing: 1.25px;\n}\n\n.nav__button {\n  width: 80px;\n  height: 36px;\n  background: var(--nav-button-background-color);\n}\n\n.nav__button:hover {\n  background: var(--nav-button-hover-color);\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  padding: 64px 0;\n  font-size: 16px;\n}\n\n#app {\n  max-width: 1020px;\n  margin: 0 auto;\n}\n\n.classroom-container__title {\n  text-align: center;\n  font-weight: bold;\n  font-size: 34px;\n  line-height: 36px;\n  margin-bottom: 64px;\n}\n\n.nav {\n  display: flex;\n  justify-content: space-between;\n}\n\n.button {\n  cursor: pointer;\n  border-radius: 4px;\n  border: none;\n  font-style: normal;\n  font-weight: bold;\n  font-size: 14px;\n  letter-spacing: 1.25px;\n}\n\n.nav__button {\n  width: 80px;\n  height: 36px;\n  background: var(--nav-button-background-color);\n}\n\n.nav__button:hover {\n  background: var(--nav-button-hover-color);\n}\n\n.hidden {\n  display: none;\n  visibility: hidden;\n}\n\n.videos-button-container button {\n  width: 117px;\n}\n", "",{"version":3,"sources":["webpack://./src/css/app.css"],"names":[],"mappings":"AACA;EACE,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,iBAAiB;EACjB,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,iBAAiB;EACjB,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,8BAA8B;AAChC;;AAEA;EACE,eAAe;EACf,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,iBAAiB;EACjB,eAAe;EACf,sBAAsB;AACxB;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,8CAA8C;AAChD;;AAEA;EACE,yCAAyC;AAC3C;;AAEA;EACE,aAAa;EACb,kBAAkB;AACpB;;AAEA;EACE,YAAY;AACd","sourcesContent":["@import url('./color.css');\nbody {\n  padding: 64px 0;\n  font-size: 16px;\n}\n\n#app {\n  max-width: 1020px;\n  margin: 0 auto;\n}\n\n.classroom-container__title {\n  text-align: center;\n  font-weight: bold;\n  font-size: 34px;\n  line-height: 36px;\n  margin-bottom: 64px;\n}\n\n.nav {\n  display: flex;\n  justify-content: space-between;\n}\n\n.button {\n  cursor: pointer;\n  border-radius: 4px;\n  border: none;\n  font-style: normal;\n  font-weight: bold;\n  font-size: 14px;\n  letter-spacing: 1.25px;\n}\n\n.nav__button {\n  width: 80px;\n  height: 36px;\n  background: var(--nav-button-background-color);\n}\n\n.nav__button:hover {\n  background: var(--nav-button-hover-color);\n}\n\n.hidden {\n  display: none;\n  visibility: hidden;\n}\n\n.videos-button-container button {\n  width: 117px;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -454,7 +955,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ":root {\n  --nav-button-background-color: #f5f5f5;\n  --nav-button-hover-color: #ebebeb;\n  --dimmer-background-color: rgba(0, 0, 0, 0.5);\n  --search-modal-background-color: #ffffff;\n  --search-modal-border-color: rgba(0, 0, 0, 0.12);\n  --search-input-border-color: #b4b4b4;\n  --search-input-placeholder-color: #8b8b8b;\n  --search-button-background-color: #00bcd4;\n  --search-button-font-color: #ffffff;\n  --save-button-background-color: #f9f9f9;\n  --save-button-hover-color: #efefef;\n  --skeleton-background-linear-start-color: #e0e0e0;\n  --skeleton-background-linear-medium-color: #ededed;\n  --skeleton-background-linear-end-color: #e0e0e0;\n}\n", "",{"version":3,"sources":["webpack://./src/css/color.css"],"names":[],"mappings":"AAAA;EACE,sCAAsC;EACtC,iCAAiC;EACjC,6CAA6C;EAC7C,wCAAwC;EACxC,gDAAgD;EAChD,oCAAoC;EACpC,yCAAyC;EACzC,yCAAyC;EACzC,mCAAmC;EACnC,uCAAuC;EACvC,kCAAkC;EAClC,iDAAiD;EACjD,kDAAkD;EAClD,+CAA+C;AACjD","sourcesContent":[":root {\n  --nav-button-background-color: #f5f5f5;\n  --nav-button-hover-color: #ebebeb;\n  --dimmer-background-color: rgba(0, 0, 0, 0.5);\n  --search-modal-background-color: #ffffff;\n  --search-modal-border-color: rgba(0, 0, 0, 0.12);\n  --search-input-border-color: #b4b4b4;\n  --search-input-placeholder-color: #8b8b8b;\n  --search-button-background-color: #00bcd4;\n  --search-button-font-color: #ffffff;\n  --save-button-background-color: #f9f9f9;\n  --save-button-hover-color: #efefef;\n  --skeleton-background-linear-start-color: #e0e0e0;\n  --skeleton-background-linear-medium-color: #ededed;\n  --skeleton-background-linear-end-color: #e0e0e0;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ":root {\n  --nav-button-background-color: #f5f5f5;\n  --nav-button-hover-color: #ebebeb;\n  --dimmer-background-color: rgba(0, 0, 0, 0.5);\n  --search-modal-background-color: #ffffff;\n  --search-modal-border-color: rgba(0, 0, 0, 0.12);\n  --search-input-border-color: #b4b4b4;\n  --search-input-placeholder-color: #8b8b8b;\n  --search-button-background-color: #00bcd4;\n  --search-button-font-color: #ffffff;\n  --save-button-background-color: #f9f9f9;\n  --save-button-hover-color: #efefef;\n  --skeleton-background-linear-start-color: #e0e0e0;\n  --skeleton-background-linear-medium-color: #ededed;\n  --skeleton-background-linear-end-color: #e0e0e0;\n  --is-active-color: #00bcd41f;\n}\n", "",{"version":3,"sources":["webpack://./src/css/color.css"],"names":[],"mappings":"AAAA;EACE,sCAAsC;EACtC,iCAAiC;EACjC,6CAA6C;EAC7C,wCAAwC;EACxC,gDAAgD;EAChD,oCAAoC;EACpC,yCAAyC;EACzC,yCAAyC;EACzC,mCAAmC;EACnC,uCAAuC;EACvC,kCAAkC;EAClC,iDAAiD;EACjD,kDAAkD;EAClD,+CAA+C;EAC/C,4BAA4B;AAC9B","sourcesContent":[":root {\n  --nav-button-background-color: #f5f5f5;\n  --nav-button-hover-color: #ebebeb;\n  --dimmer-background-color: rgba(0, 0, 0, 0.5);\n  --search-modal-background-color: #ffffff;\n  --search-modal-border-color: rgba(0, 0, 0, 0.12);\n  --search-input-border-color: #b4b4b4;\n  --search-input-placeholder-color: #8b8b8b;\n  --search-button-background-color: #00bcd4;\n  --search-button-font-color: #ffffff;\n  --save-button-background-color: #f9f9f9;\n  --save-button-hover-color: #efefef;\n  --skeleton-background-linear-start-color: #e0e0e0;\n  --skeleton-background-linear-medium-color: #ededed;\n  --skeleton-background-linear-end-color: #e0e0e0;\n  --is-active-color: #00bcd41f;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -480,7 +981,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_modal_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./modal.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/modal.css");
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_skeleton_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./skeleton.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/skeleton.css");
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_color_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./color.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/color.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_responsive_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./responsive.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/responsive.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_video_content_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./video-content.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/video-content.css");
 // Imports
+
+
 
 
 
@@ -492,8 +997,10 @@ ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_app_css__WEBPACK_
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_modal_css__WEBPACK_IMPORTED_MODULE_3__["default"]);
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_skeleton_css__WEBPACK_IMPORTED_MODULE_4__["default"]);
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_color_css__WEBPACK_IMPORTED_MODULE_5__["default"]);
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_responsive_css__WEBPACK_IMPORTED_MODULE_6__["default"]);
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_video_content_css__WEBPACK_IMPORTED_MODULE_7__["default"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nhtml,\nbody {\n  height: 100%;\n  -webkit-font-smoothing: antialiased;\n}\n\ninput,\nbutton,\ntextarea,\nselect {\n  font: inherit;\n}\n", "",{"version":3,"sources":["webpack://./src/css/index.css"],"names":[],"mappings":"AAIA;EACE,SAAS;EACT,UAAU;EACV,sBAAsB;AACxB;;AAEA;;EAEE,gBAAgB;AAClB;;AAEA;;EAEE,YAAY;EACZ,mCAAmC;AACrC;;AAEA;;;;EAIE,aAAa;AACf","sourcesContent":["@import './app.css';\n@import './modal.css';\n@import './skeleton.css';\n@import './color.css';\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nhtml,\nbody {\n  height: 100%;\n  -webkit-font-smoothing: antialiased;\n}\n\ninput,\nbutton,\ntextarea,\nselect {\n  font: inherit;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nhtml,\nbody {\n  height: 100%;\n  -webkit-font-smoothing: antialiased;\n}\n\ninput,\nbutton,\ntextarea,\nselect {\n  font: inherit;\n}\n", "",{"version":3,"sources":["webpack://./src/css/index.css"],"names":[],"mappings":"AAOA;EACE,SAAS;EACT,UAAU;EACV,sBAAsB;AACxB;;AAEA;;EAEE,gBAAgB;AAClB;;AAEA;;EAEE,YAAY;EACZ,mCAAmC;AACrC;;AAEA;;;;EAIE,aAAa;AACf","sourcesContent":["@import './app.css';\n@import './modal.css';\n@import './skeleton.css';\n@import './color.css';\n@import './responsive.css';\n@import './video-content.css';\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nol,\nul {\n  list-style: none;\n}\n\nhtml,\nbody {\n  height: 100%;\n  -webkit-font-smoothing: antialiased;\n}\n\ninput,\nbutton,\ntextarea,\nselect {\n  font: inherit;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -527,6 +1034,33 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".modal-container {\n  display: flex;\n
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/css/responsive.css":
+/*!**********************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/css/responsive.css ***!
+  \**********************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "/* \n gutter: 20px \n col: 240px (- video item의 대략적인 width) \n*/\n\n.watch-later-videos-container ul {\n  display: grid;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n}\n.watched-videos-container ul {\n  display: grid;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n}\n\n@media screen and (max-width: 600px) {\n  .classroom-container {\n    margin: 0 20px !important;\n  }\n  .nav {\n    max-width: 567px;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(1, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(1, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 600px) and (max-width: 960px) {\n  .classroom-container {\n    margin: 0 45px !important;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(2, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(2, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 960px) and (max-width: 1280px) {\n  .classroom-container {\n    margin: 0 94px !important;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(3, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(3, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 1280px) {\n  .watch-later-videos-container ul {\n    grid-template-columns: repeat(4, 1fr);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    grid-template-columns: repeat(4, 1fr);\n    column-gap: 10px;\n  }\n}\n", "",{"version":3,"sources":["webpack://./src/css/responsive.css"],"names":[],"mappings":"AAAA;;;CAGC;;AAED;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,qBAAqB;AACvB;AACA;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,qBAAqB;AACvB;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,gBAAgB;EAClB;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;AACF;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;AACF;;AAEA;EACE;IACE,yBAAyB;EAC3B;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;EACA;IACE,WAAW;IACX,uCAAuC;IACvC,gBAAgB;EAClB;AACF;;AAEA;EACE;IACE,qCAAqC;IACrC,gBAAgB;EAClB;EACA;IACE,qCAAqC;IACrC,gBAAgB;EAClB;AACF","sourcesContent":["/* \n gutter: 20px \n col: 240px (- video item의 대략적인 width) \n*/\n\n.watch-later-videos-container ul {\n  display: grid;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n}\n.watched-videos-container ul {\n  display: grid;\n  justify-content: center;\n  align-items: center;\n  align-content: center;\n}\n\n@media screen and (max-width: 600px) {\n  .classroom-container {\n    margin: 0 20px !important;\n  }\n  .nav {\n    max-width: 567px;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(1, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(1, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 600px) and (max-width: 960px) {\n  .classroom-container {\n    margin: 0 45px !important;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(2, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(2, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 960px) and (max-width: 1280px) {\n  .classroom-container {\n    margin: 0 94px !important;\n  }\n  .watch-later-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(3, 240px);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    width: 100%;\n    grid-template-columns: repeat(3, 240px);\n    column-gap: 10px;\n  }\n}\n\n@media screen and (min-width: 1280px) {\n  .watch-later-videos-container ul {\n    grid-template-columns: repeat(4, 1fr);\n    column-gap: 10px;\n  }\n  .watched-videos-container ul {\n    grid-template-columns: repeat(4, 1fr);\n    column-gap: 10px;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/css/skeleton.css":
 /*!********************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/css/skeleton.css ***!
@@ -548,6 +1082,36 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, ".skeleton {\n  width: 236px;\n}\n\n.skeleton .image,\n.skeleton .line {\n  background-image: linear-gradient(\n    90deg,\n    var(--skeleton-background-linear-start-color) 0,\n    var(--skeleton-background-linear-medium-color) 30px,\n    var(--skeleton-background-linear-end-color) 60px\n  );\n  animation: refresh 2s infinite ease-out;\n}\n\n.skeleton .image {\n  height: 150px;\n  margin-bottom: 16px;\n}\n\n.skeleton .line {\n  height: 16px;\n}\n\n.skeleton .line:first-child {\n  width: 50%;\n}\n\n.skeleton .line:last-child {\n  width: 80%;\n  margin-top: 16px;\n}\n\n@keyframes refresh {\n  0% {\n    background-position: calc(-100px);\n  }\n  40%,\n  100% {\n    background-position: 320px;\n  }\n}\n", "",{"version":3,"sources":["webpack://./src/css/skeleton.css"],"names":[],"mappings":"AAAA;EACE,YAAY;AACd;;AAEA;;EAEE;;;;;GAKC;EACD,uCAAuC;AACzC;;AAEA;EACE,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,UAAU;AACZ;;AAEA;EACE,UAAU;EACV,gBAAgB;AAClB;;AAEA;EACE;IACE,iCAAiC;EACnC;EACA;;IAEE,0BAA0B;EAC5B;AACF","sourcesContent":[".skeleton {\n  width: 236px;\n}\n\n.skeleton .image,\n.skeleton .line {\n  background-image: linear-gradient(\n    90deg,\n    var(--skeleton-background-linear-start-color) 0,\n    var(--skeleton-background-linear-medium-color) 30px,\n    var(--skeleton-background-linear-end-color) 60px\n  );\n  animation: refresh 2s infinite ease-out;\n}\n\n.skeleton .image {\n  height: 150px;\n  margin-bottom: 16px;\n}\n\n.skeleton .line {\n  height: 16px;\n}\n\n.skeleton .line:first-child {\n  width: 50%;\n}\n\n.skeleton .line:last-child {\n  width: 80%;\n  margin-top: 16px;\n}\n\n@keyframes refresh {\n  0% {\n    background-position: calc(-100px);\n  }\n  40%,\n  100% {\n    background-position: 320px;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/css/video-content.css":
+/*!*************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/css/video-content.css ***!
+  \*************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_color_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! -!../../node_modules/css-loader/dist/cjs.js!./color.css */ "./node_modules/css-loader/dist/cjs.js!./src/css/color.css");
+// Imports
+
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_color_css__WEBPACK_IMPORTED_MODULE_2__["default"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".is-active {\n  background-color: var(--is-active-color);\n}\n\n.watch-later-videos-container {\n  margin-top: 40px;\n}\n\n.watched-videos-container {\n  margin-top: 40px;\n  width: 100%;\n}\n.empty-img-container {\n  width: 100%;\n  display: flex;\n  justify-content: center;\n  justify-items: center;\n  flex-wrap: wrap;\n}\n\n#empty-img {\n  width: 700px;\n  height: auto;\n}\n\n.watch-later-video-item {\n  margin-bottom: 20px;\n}\n\n.watched-video-item {\n  margin-bottom: 20px;\n}\n\n.button-container {\n  display: flex;\n  justify-content: end;\n}\n\n.button-container button {\n  width: 36px;\n  height: 36px;\n}\n\n.button-container button:hover {\n  background-color: var(--nav-button-hover-color);\n}\n\n.video-item__watched-button {\n  margin-right: 8px;\n}\n\n.watched-video-item-button-group > .video-item__watched-button {\n  background-color: var(--is-active-color);\n}\n", "",{"version":3,"sources":["webpack://./src/css/video-content.css"],"names":[],"mappings":"AACA;EACE,wCAAwC;AAC1C;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,WAAW;AACb;AACA;EACE,WAAW;EACX,aAAa;EACb,uBAAuB;EACvB,qBAAqB;EACrB,eAAe;AACjB;;AAEA;EACE,YAAY;EACZ,YAAY;AACd;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,oBAAoB;AACtB;;AAEA;EACE,WAAW;EACX,YAAY;AACd;;AAEA;EACE,+CAA+C;AACjD;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,wCAAwC;AAC1C","sourcesContent":["@import url('./color.css');\n.is-active {\n  background-color: var(--is-active-color);\n}\n\n.watch-later-videos-container {\n  margin-top: 40px;\n}\n\n.watched-videos-container {\n  margin-top: 40px;\n  width: 100%;\n}\n.empty-img-container {\n  width: 100%;\n  display: flex;\n  justify-content: center;\n  justify-items: center;\n  flex-wrap: wrap;\n}\n\n#empty-img {\n  width: 700px;\n  height: auto;\n}\n\n.watch-later-video-item {\n  margin-bottom: 20px;\n}\n\n.watched-video-item {\n  margin-bottom: 20px;\n}\n\n.button-container {\n  display: flex;\n  justify-content: end;\n}\n\n.button-container button {\n  width: 36px;\n  height: 36px;\n}\n\n.button-container button:hover {\n  background-color: var(--nav-button-hover-color);\n}\n\n.video-item__watched-button {\n  margin-right: 8px;\n}\n\n.watched-video-item-button-group > .video-item__watched-button {\n  background-color: var(--is-active-color);\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1829,6 +2393,21 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "./src/assets/images/empty_img.png":
+/*!*****************************************!*\
+  !*** ./src/assets/images/empty_img.png ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "assets/empty_img.png");
+
+/***/ }),
+
 /***/ "./src/assets/images/not_found.png":
 /*!*****************************************!*\
   !*** ./src/assets/images/not_found.png ***!
@@ -2098,6 +2677,34 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */ });
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArray.js":
 /*!********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js ***!
@@ -2292,14 +2899,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ App)
 /* harmony export */ });
-/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/general.js */ "./src/js/util/general.js");
-/* harmony import */ var _domain_YoutubeMachine_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./domain/YoutubeMachine.js */ "./src/js/domain/YoutubeMachine.js");
-/* harmony import */ var _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ui/userInterface.js */ "./src/js/ui/userInterface.js");
-/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../css/index.css */ "./src/css/index.css");
-/* harmony import */ var _assets_images_not_found_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../assets/images/not_found.png */ "./src/assets/images/not_found.png");
-/* harmony import */ var _storage_storage_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./storage/storage.js */ "./src/js/storage/storage.js");
-/* harmony import */ var _constants_constants_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./constants/constants.js */ "./src/js/constants/constants.js");
-/* harmony import */ var _util_throttle_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./util/throttle.js */ "./src/js/util/throttle.js");
+/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/index.css */ "./src/css/index.css");
+/* harmony import */ var _assets_images_not_found_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/images/not_found.png */ "./src/assets/images/not_found.png");
+/* harmony import */ var _assets_images_empty_img_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../assets/images/empty_img.png */ "./src/assets/images/empty_img.png");
+/* harmony import */ var _util_general_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./util/general.js */ "./src/js/util/general.js");
+/* harmony import */ var _constants_constants_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./constants/constants.js */ "./src/js/constants/constants.js");
+/* harmony import */ var _util_throttle_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./util/throttle.js */ "./src/js/util/throttle.js");
+/* harmony import */ var _modules_handleSearchEvent_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/handleSearchEvent.js */ "./src/js/modules/handleSearchEvent.js");
+/* harmony import */ var _modules_handleWatchLaterVideoEvent_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/handleWatchLaterVideoEvent.js */ "./src/js/modules/handleWatchLaterVideoEvent.js");
+/* harmony import */ var _modules_handleWatchedVideoEvent_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/handleWatchedVideoEvent.js */ "./src/js/modules/handleWatchedVideoEvent.js");
+/* harmony import */ var _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ui/watchLaterInterface.js */ "./src/js/ui/watchLaterInterface.js");
+
+
 
 
 
@@ -2309,49 +2920,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function App() {
-  var youtubeMachine = new _domain_YoutubeMachine_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
-
-  var handleSearch = function handleSearch() {
-    try {
-      youtubeMachine.resetSearchResult();
-      _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].resetVideoList();
-      var searchInput = (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('#search-input-keyword').value.trim();
-      _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderSkeletonUI();
-      youtubeMachine.search(searchInput);
-      _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderSearchResult(youtubeMachine.searchResult);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  var handleScroll = function handleScroll(e) {
-    if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
-      _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderSkeletonUI();
-      youtubeMachine.searchScrollingResult();
-      _ui_userInterface_js__WEBPACK_IMPORTED_MODULE_2__["default"].renderNextSearchResult(youtubeMachine.searchResult);
-    }
-  };
-
-  var handleSaveButtonClick = function handleSaveButtonClick(e) {
-    if (!e.target.classList.contains('video-item__save-button')) {
-      return;
-    }
-
-    e.target.closest('button').hidden = true;
-    var videoId = e.target.parentElement.dataset.videoId;
-    _storage_storage_js__WEBPACK_IMPORTED_MODULE_5__["default"].saveVideo(videoId);
-  };
-
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('#search-modal-button').addEventListener('click', function () {
-    (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.modal-container').classList.toggle('hide');
+  var handleSearchEvent = new _modules_handleSearchEvent_js__WEBPACK_IMPORTED_MODULE_6__.SearchEventHandler();
+  var handleWatchLaterEvent = new _modules_handleWatchLaterVideoEvent_js__WEBPACK_IMPORTED_MODULE_7__.WatchLaterVideoEventHandler();
+  var handleWatchedVideoEvent = new _modules_handleWatchedVideoEvent_js__WEBPACK_IMPORTED_MODULE_8__.WatchedVideoEventHandler();
+  _ui_watchLaterInterface_js__WEBPACK_IMPORTED_MODULE_9__["default"].renderWatchLaterVideos();
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('#search-modal-button').addEventListener('click', function () {
+    (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.modal-container').classList.toggle('hide');
   });
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('#search-button').addEventListener('click', handleSearch);
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('#search-input-keyword').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') handleSearch();
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('#search-button').addEventListener('click', handleSearchEvent.handleSearch);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('#search-input-keyword').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') handleSearchEvent.handleSearch();
   });
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').addEventListener('scroll', (0,_util_throttle_js__WEBPACK_IMPORTED_MODULE_7__.applyThrottle)(handleScroll, _constants_constants_js__WEBPACK_IMPORTED_MODULE_6__.THROTTLE_DELAY));
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.video-list').addEventListener('click', handleSaveButtonClick);
-  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.dimmer').addEventListener('click', _util_general_js__WEBPACK_IMPORTED_MODULE_0__.quickModalElement);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.video-list').addEventListener('scroll', (0,_util_throttle_js__WEBPACK_IMPORTED_MODULE_5__.applyThrottle)(handleSearchEvent.handleScroll, _constants_constants_js__WEBPACK_IMPORTED_MODULE_4__.THROTTLE_DELAY));
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.video-list').addEventListener('click', handleSearchEvent.handleSaveButtonClick);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.dimmer').addEventListener('click', _util_general_js__WEBPACK_IMPORTED_MODULE_3__.quickModalElement);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watch-later-nav-button').addEventListener('click', handleWatchLaterEvent.handleWatchLater);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watched-nav-button').addEventListener('click', handleWatchedVideoEvent.handleWatchedVideo);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watch-later-videos-container ul').addEventListener('click', handleWatchLaterEvent.handleWatchedButtonClick);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watch-later-videos-container ul').addEventListener('click', handleWatchLaterEvent.handleDeleteButtonClick);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watched-videos-container ul').addEventListener('click', handleWatchedVideoEvent.handledWatchedButtonClick);
+  (0,_util_general_js__WEBPACK_IMPORTED_MODULE_3__.$)('.watched-videos-container ul').addEventListener('click', handleWatchedVideoEvent.handleDeleteButtonClick);
 }
 App();
 })();
