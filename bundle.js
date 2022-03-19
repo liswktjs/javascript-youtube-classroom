@@ -672,7 +672,6 @@ var watchLaterInterface = {
     var savedVideoData = _storage_storage_js__WEBPACK_IMPORTED_MODULE_0__["default"].getLocalStorage();
 
     if (!savedVideoData) {
-      console.log(!savedVideoData);
       (0,_util_render_js__WEBPACK_IMPORTED_MODULE_2__.showEmptyImg)('.watch-later-empty-img-container');
       return;
     }
@@ -873,7 +872,7 @@ var showEmptyImg = function showEmptyImg(selector) {
 };
 var removeEmptyImg = function removeEmptyImg(selector) {
   if ((0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).hasChildNodes()) {
-    (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).removeChild((0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)('.empty-img-container'));
+    (0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).removeChild((0,_general_js__WEBPACK_IMPORTED_MODULE_0__.$)(selector).firstChild);
   }
 };
 
